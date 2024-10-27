@@ -105,6 +105,12 @@ func getFlags() (validatorConfig, error) {
 
 	flag.Parse()
 
+	if *globbingPrt && (*excludeDirsPtr != "" || *excludeFileTypesPtr != "") {
+		fmt.Println("The -globbing flag cannot be used with --exclude-dirs or --exclude-file-types")
+		flag.Usage()
+		return validatorConfig{}, errors.New("The -globbing flag cannot be used with --exclude-dirs or --exclude-file-types")
+	}
+
 	searchPaths := make([]string, 0)
 
 	// If search path arg is empty, set it to the cwd
